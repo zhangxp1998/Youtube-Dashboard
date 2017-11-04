@@ -12,7 +12,7 @@ base_url = 'https://www.googleapis.com/youtube/v3/commentThreads'
 parts = 'snippet,replies'
 
 def analyze(request):
-	params = {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoUrl'), 'maxResults': "20"}
+	params = {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoId'), 'maxResults': "20"}
 	if request.GET.get('pageNum'):
 		params['pageToken'] = request.GET.get('pageNum')
 	resp = requests.get(base_url, params)

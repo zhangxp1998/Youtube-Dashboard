@@ -45,12 +45,16 @@ export default class SampleAppContainer extends React.Component {
     this.state = {data: data, videoUrl: ""};
   }
   handleSubmit = (event) => {
-    console.log(event);
-    var params = {videoId: videoUrl, url: '/analyze'};
+    var params = {method:'get', data: {videoId: this.state.videoUrl}, url: '/analyze/', success: (result) => console.log(result)};
     params.csrfmiddlewaretoken = cookie.load('csrftoken');
     $.ajax(params);
     event.preventDefault();
   }
+
+  handleType = (event) => {
+    this.setState({videoUrl: event.target.value});
+  }
+
   render() {
     return (
       <div>
@@ -58,7 +62,7 @@ export default class SampleAppContainer extends React.Component {
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
         <form>
-        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl'/>
+        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType}/>
         <input type="submit" onClick={this.handleSubmit}/>
         </form>
 
