@@ -54,9 +54,9 @@ def process(lines):
     #     sum_emotive += value
     # for key, value in emotive_stats.items():
     #     emotive_stats[key] = emotive_stats[key]/sum_emotive
-    print(emotive_stats)
-    print()
-    print(emotive_distribution)
+    # print(emotive_stats)
+    # print()
+    # print(emotive_distribution)
         # print json.dumps(j, indent=4, sort_keys=True)
     # plt.bar(range(len(emotive_stats)), emotive_stats.values(), align='center')
     # plt.xticks(range(len(emotive_stats)), emotive_stats.keys())

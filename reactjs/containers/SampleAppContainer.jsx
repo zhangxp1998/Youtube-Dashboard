@@ -3,9 +3,10 @@ import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
 import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from "recharts";
 import Headline from "../components/Headline"
 
-const placeholderUrl = 'https://www.youtube.com/watch?v=NWdc7PyZNLA';
-var $ = require("jquery");
 
+const placeholderUrl = 'https://www.youtube.com/watch?v=NWdc7PyZNLA';
+const $ = require("jquery");
+const moment = require('moment');
 
 const colors = [
   {stroke: '#8884d8', fill: '#8884d8'},
@@ -78,9 +79,9 @@ export default class SampleAppContainer extends React.Component {
 
   handleData = (result) =>
   {
-    // console.log(result['timestamp']);
+    // console.log(moment(result['timestamp']).fromNow());
     // console.log(result);
-    result.data.stats['page'] = result['timestamp'].substring(0, 10);
+    result.data.stats['page'] = moment(result['timestamp']).fromNow(true);
     var e_temp = this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0))
     var data_s = this.state.data_sum;
     // console.log(data_s)

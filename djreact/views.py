@@ -27,6 +27,8 @@ def analyze(request):
 	print("procesing...")
 	print(text)
 	result = process(['\n'.join(text)])
-	result = {'nextPageToken': data['nextPageToken'], 'data': result, 'timestamp': data['items'][0]['snippet']['topLevelComment']['snippet']['updatedAt']}
-	
+	result = {'data': result, 'timestamp': data['items'][0]['snippet']['topLevelComment']['snippet']['updatedAt']}
+	if data.get('nextPageToken') != None:
+		result['nextPageToken'] = data['nextPageToken']
+
 	return JsonResponse(result, safe=False)
