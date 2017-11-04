@@ -53,7 +53,10 @@ export default class SampleAppContainer extends React.Component {
         <HeadText text="Analyze YouTube Comment"/>
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
-        <input style={{marginLeft: "50px"}} type='text' id='id1' value=''/>
+        <form action="/analyze/" method="GET">
+        <input style={{marginLeft: "50px"}} type='text' id='videoUrl'/>
+        <input type="submit"/>
+        </form>
 
         <br/><br/><br/>
         <AreaChart style={{marginLeft: "50px"}} width={600} height={400} data={data}
