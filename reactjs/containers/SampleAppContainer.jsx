@@ -1,6 +1,6 @@
 import React from "react"
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
-import {RadarChart} from "recharts";
+import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from "recharts";
 import Headline from "../components/Headline"
 
 const cookie = require('react-cookie');
@@ -71,20 +71,40 @@ export default class SampleAppContainer extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {nextPageToken:"", emotions:[], data: [], data_sum: [], videoUrl: ""};
+    this.state = {nextPageToken:"", emotions:[], data: [], data_sum: [], data_display: [], videoUrl: ""};
   }
 
   handleData = (result) =>
   {
-    console.log(result);
+    // console.log(result);
     result.data.stats['page'] = this.pages++;
     console.log(this.state.emotions);
+    var e_temp = this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0))
+    console.log(e_temp);
+    var data_s = this.state.data_sum;
+    // console.log(data_s)
+    var data_dis = []
+    for (var i = 0; i < e_temp.length; i++){
+      var x = e_temp[i]
+      if (typeof(data_s[x]) == 'undefined' && typeof(result.data.stats[x]) == 'undefined'){
+        data_s[x] = 0;
+      } else if (typeof(data_s[x]) == 'undefined' && typeof(result.data.stats[x]) !== 'undefined') {
+        data_s[x] = result.data.stats[x];
+      } else if (typeof(data_s[x]) !== 'undefined' && typeof(result.data.stats[x]) !== 'undefined'){
+        data_s[x] += result.data.stats[x];
+      }
+      data_dis.push({"emotion": x, "rate":data_s[x]});
+    }
+
+    console.log(data_dis)
     this.setState({
       nextPageToken: result.nextPageToken,
-      emotions: this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0)),
+      emotions: e_temp,
       data: this.state.data.concat(result.data.stats),
-      data_sum: this.state.data
+      data_sum: data_s,
+      data_display: data_dis
     });
+
   }
 
   handleSubmit = (event) => {
@@ -126,6 +146,14 @@ export default class SampleAppContainer extends React.Component {
         {this.state.emotions.map((obj, index) =>
           <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
       </AreaChart>
+
+      <RadarChart outerRadius={90} width={730} height={250} data={this.state.data_display}>
+        <PolarGrid />
+        <PolarAngleAxis dataKey="emotion" />
+        <PolarRadiusAxis angle={30} domain={[0, 10]} />
+        <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+        <Legend />
+      </RadarChart>
       </div>
     );
   }
