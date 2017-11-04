@@ -22,9 +22,11 @@ def analyze(request):
 		params['pageToken'] = request.GET.get('nextPageToken')
 	resp = requests.get(base_url, params)
 	data = resp.json()
+
 	text = [x['snippet']['topLevelComment']['snippet']['textDisplay'] for x in data['items']]
 	print("procesing...")
 	print(text)
 	result = process(['\n'.join(text)])
-	result = {'nextPageToken': data['nextPageToken'], 'data': result}
+	result = {'nextPageToken': data['nextPageToken'], 'data': result, 'timestamp': data['items'][0]['snippet']['topLevelComment']['snippet']['updatedAt']}
+	
 	return JsonResponse(result, safe=False)

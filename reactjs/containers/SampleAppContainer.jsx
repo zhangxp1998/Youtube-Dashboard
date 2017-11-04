@@ -78,8 +78,9 @@ export default class SampleAppContainer extends React.Component {
 
   handleData = (result) =>
   {
+    // console.log(result['timestamp']);
     // console.log(result);
-    result.data.stats['page'] = this.pages += 20;
+    result.data.stats['page'] = result['timestamp'].substring(0, 10);
     var e_temp = this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0))
     var data_s = this.state.data_sum;
     // console.log(data_s)
