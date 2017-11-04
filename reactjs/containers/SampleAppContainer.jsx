@@ -6,14 +6,13 @@ const cookie = require('react-cookie');
 var $ = require("jquery");
 
 
-const data = [
-      {month: '2015.01', a: 4000, b: 2400, c: 2400},
-      {month: '2015.02', a: 3000, b: 1398, c: 2210},
-      {month: '2015.03', a: 2000, b: 9800, c: 2290},
-      {month: '2015.04', a: 2780, b: 3908, c: 2000},
-      {month: '2015.05', a: 1890, b: 4800, c: 2181},
-      {month: '2015.06', a: 2390, b: 3800, c: 2500},
-      {month: '2015.07', a: 3490, b: 4300, c: 2100},
+const colors = [
+  {stroke: '#8884d8', fill: '#8884d8'}, 
+  {stroke: '#82ca9d', fill: '#82ca9d'},
+  {stroke: '#FFFF66', fill: '#FFFF66'},
+  {stroke: '#CCFFFF', fill: '#CCFFFF'},
+  {stroke: '#FFCCFF', fill: '#FFCCFF'},
+  {stroke: '#FF9933', fill: '#FF9933'}
 ];
 
 const getPercent = (value, total) => {
@@ -71,19 +70,21 @@ export default class SampleAppContainer extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {data: data, videoUrl: ""};
+    this.state = {emotions:[], data: [], videoUrl: ""};
   }
 
-  handleData = (data) =>
+  handleData = (result) =>
   {
-    
+    console.log(result);
+    result.data.stats['page'] = this.pages++;
+    this.setState({emotions:result.data.emotions, data: this.state.data.concat(result.data.stats)});
   }
 
   handleSubmit = (event) => {
     var regex = new RegExp("youtube.com\/.*=(.*)");
     const videoId = regex.exec("https://www.youtube.com/watch?v=d6c6uIyieoo")[1];
     console.log(videoId);
-    var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: (result) => console.log(result)};
+    var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: this.handleData};
     params.csrfmiddlewaretoken = cookie.load('csrftoken');
     $.ajax(params);
     event.preventDefault();
@@ -93,6 +94,8 @@ export default class SampleAppContainer extends React.Component {
     this.setState({videoUrl: event.target.value});
   }
 
+  
+  pages = 0;
   render() {
     return (
       <div>
@@ -105,15 +108,13 @@ export default class SampleAppContainer extends React.Component {
         </form>
 
         <br/><br/><br/>
-      <AreaChart width={600} height={400} data={data} stackOffset="expand"
+      <AreaChart width={600} height={400} data={this.state.data} stackOffset="expand"
             margin={{top: 10, right: 30, left: 0, bottom: 0}} >
-        <XAxis dataKey="month"/>
+        <XAxis dataKey="page"/>
         <YAxis tickFormatter={toPercent}/>
         <CartesianGrid strokeDasharray="3 3"/>
-        <Tooltip content={renderTooltipContent}/>
-        <Area type='monotone' dataKey='a' stackId="1" stroke='#8884d8' fill='#8884d8' />
-        <Area type='monotone' dataKey='b' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
-        <Area type='monotone' dataKey='c' stackId="1" stroke='#ffc658' fill='#ffc658' />
+        {this.state.emotions.map((obj, index) => 
+          <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
       </AreaChart>
       </div>
     );

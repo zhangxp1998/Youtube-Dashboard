@@ -21,5 +21,5 @@ def analyze(request):
 	print("procesing...")
 	print(text)
 	result = process(['\n'.join(text)])
-	result['pageCount'] = data['pageInfo']['totalResults']
+	result = {'pageCount': data['pageInfo']['totalResults'], 'data': result}
 	return JsonResponse(result, safe=False)
