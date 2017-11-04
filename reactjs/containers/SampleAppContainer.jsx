@@ -120,6 +120,15 @@ export default class SampleAppContainer extends React.Component {
         </form>
 
         <br/><br/><br/>
+
+        <RadarChart outerRadius={90} width={400} height={400} data={this.state.data_display}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="emotion" />
+          <PolarRadiusAxis angle={30} domain={[0, 10]} />
+          <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+          <Legend />
+        </RadarChart>
+
         <AreaChart width={1200} height={400} data={this.state.data_sample}
               margin={{top: 10, right: 30, left: 0, bottom: 0}} onClick={console.log}>
           <XAxis dataKey="page"/>
@@ -130,13 +139,6 @@ export default class SampleAppContainer extends React.Component {
             <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
         </AreaChart>
 
-        <RadarChart outerRadius={90} width={400} height={400} data={this.state.data_display}>
-          <PolarGrid />
-          <PolarAngleAxis dataKey="emotion" />
-          <PolarRadiusAxis angle={30} domain={[0, 10]} />
-          <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-          <Legend />
-        </RadarChart>
       </div>
     );
   }
