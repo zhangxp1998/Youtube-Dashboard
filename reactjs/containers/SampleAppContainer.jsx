@@ -147,11 +147,12 @@ export default class SampleAppContainer extends React.Component {
         </form>
 
         <br/><br/><br/>
-        <AreaChart width={600} height={400} data={this.state.data_sample} stackOffset="expand"
+        <AreaChart width={600} height={400} data={this.state.data_sample}
               margin={{top: 10, right: 30, left: 0, bottom: 0}} >
           <XAxis dataKey="page"/>
-          <YAxis tickFormatter={toPercent}/>
+          <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>
+          <Tooltip/>
           {this.state.emotions.map((obj, index) =>
             <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
         </AreaChart>
