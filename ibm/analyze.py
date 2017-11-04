@@ -5,7 +5,7 @@ import os
 import sys
 from os.path import join, dirname
 from watson_developer_cloud import ToneAnalyzerV3
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 from googletrans import Translator
 
 
@@ -32,11 +32,10 @@ def process(lines):
     for text in lines:
         text = tr.translate(text).text
         data.append(tone_analyzer.tone(text=text))
-        
+
     emotives = []
     emotive_stats = {}
     for j in data:
-        print j
         for t in j['document_tone']['tones']:
             emotives.append(t)
             if t['tone_name'] not in emotive_stats:
@@ -48,11 +47,11 @@ def process(lines):
             #         emotive_types.append(tone['tone_name'])
     print(emotive_stats)
         # print json.dumps(j, indent=4, sort_keys=True)
-    plt.bar(range(len(emotive_stats)), emotive_stats.values(), align='center')
-    plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
-
-    plt.show()
-    return
+    # plt.bar(range(len(emotive_stats)), emotive_stats.values(), align='center')
+    # plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
+    #
+    # plt.show()
+    return emotive_stats
 
 
 if __name__ == "__main__":
