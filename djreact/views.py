@@ -4,12 +4,12 @@ from django.core import serializers
 from django.http import HttpResponse
 from django.http import JsonResponse
 from ibm.analyze import process
-
 import requests
 
 api_key = 'AIzaSyDKBiADgbHTVrTF_O5WkQH5E8ZttShLNmw'
 base_url = 'https://www.googleapis.com/youtube/v3/commentThreads'
 parts = 'snippet,replies'
+
 
 def analyze(request):
 	params = {

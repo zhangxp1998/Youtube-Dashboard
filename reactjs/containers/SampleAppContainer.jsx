@@ -71,9 +71,9 @@ export default class SampleAppContainer extends React.Component {
 
     const data = this.state.data.concat(result.data.stats);
     var data_sample = data;
-    if(data_sample.length > 16)
+    if(data_sample.length > 32)
     {
-        const step = data_sample.length >> 4;
+        const step = data_sample.length >> 5;
         data_sample = data_sample.filter((x, i) => i % step == 0);
     }
     this.setState({
@@ -120,8 +120,8 @@ export default class SampleAppContainer extends React.Component {
         </form>
 
         <br/><br/><br/>
-        <AreaChart width={600} height={400} data={this.state.data_sample}
-              margin={{top: 10, right: 30, left: 0, bottom: 0}} >
+        <AreaChart width={1200} height={400} data={this.state.data_sample}
+              margin={{top: 10, right: 30, left: 0, bottom: 0}} onClick={console.log}>
           <XAxis dataKey="page"/>
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>

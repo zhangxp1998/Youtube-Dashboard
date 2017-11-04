@@ -5,8 +5,6 @@ import os
 import sys
 from os.path import join, dirname
 from watson_developer_cloud import ToneAnalyzerV3
-# from matplotlib import pyplot as plt
-from googletrans import Translator
 
 
 # Variables
@@ -28,7 +26,7 @@ def main():
 
 def process(lines):
     data = []
-    tr = Translator()
+    # tr = Translator()
     for text in lines:
         #text = tr.translate(text).text
         data.append(tone_analyzer.tone(text=text))
