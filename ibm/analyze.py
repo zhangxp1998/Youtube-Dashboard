@@ -30,7 +30,7 @@ def process(lines):
     data = []
     tr = Translator()
     for text in lines:
-        text = tr.translate(text).text
+        #text = tr.translate(text).text
         data.append(tone_analyzer.tone(text=text))
 
     emotives = []
