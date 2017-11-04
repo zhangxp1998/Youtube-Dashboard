@@ -35,9 +35,11 @@ def process(lines):
 
     emotive_distribution = {}
     emotive_stats = {}
+    emotions = []
     for j in data:
         for t in j['document_tone']['tones']:
             if t['tone_name'] not in emotive_stats:
+                emotions.append(t['tone_name'])
                 emotive_stats[t['tone_name']] = t['score']
                 emotive_distribution[t['tone_name']] = 1
             else:
@@ -64,7 +66,7 @@ def process(lines):
     #     emotive_stats = 0
     # if len(emotive_distribution) == 0:
     #     emotive_stats = 0
-    return {'stats': emotive_stats, 'dist': emotive_distribution}
+    return {'stats': emotive_stats, 'dist': emotive_distribution, 'emotions': emotions}
 
 
 if __name__ == "__main__":
