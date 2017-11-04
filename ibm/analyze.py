@@ -24,17 +24,19 @@ def main():
     with open(file_name, 'r') as f:
         lines = f.readlines()
         size = len(lines)
-        data = []
-        tr = Translator()
-        for text in lines:
-            text = tr.translate(text).text
-            data.append(tone_analyzer.tone(text=text))
-    process(data)
+    process(lines)
 
-def process(data):
+def process(lines):
+    data = []
+    tr = Translator()
+    for text in lines:
+        text = tr.translate(text).text
+        data.append(tone_analyzer.tone(text=text))
+        
     emotives = []
     emotive_stats = {}
     for j in data:
+        print j
         for t in j['document_tone']['tones']:
             emotives.append(t)
             if t['tone_name'] not in emotive_stats:
