@@ -54,7 +54,7 @@ export default class SampleAppContainer extends React.Component {
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
         <form action="/analyze/" method="GET">
-        <input style={{marginLeft: "50px"}} type='text' id='videoUrl'/>
+        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl'/>
         <input type="submit"/>
         </form>
 

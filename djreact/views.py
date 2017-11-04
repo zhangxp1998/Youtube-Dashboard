@@ -12,11 +12,8 @@ base_url = 'https://www.googleapis.com/youtube/v3/commentThreads'
 parts = 'snippet,replies'
 
 def analyze(request):
-	print(request.GET)
-	resp = requests.get(base_url, {'part': parts, 'key':api_key, 'videoId': request.form['videoId'], 'maxResults': "100"})
+	resp = requests.get(base_url, {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoUrl'), 'maxResults': "100"})
 	data = resp.json()
-	print(data)
-	return JsonResponse(data)
-	# text = [x['snippet']['topLevelComment']['snippet']['textDisplay'] for x in data['items']]
-	# print(text)
-	# return JsonResponse(text)
+	text = [x['snippet']['topLevelComment']['snippet']['textDisplay'] for x in data['items']]
+	print(text)
+	return JsonResponse(text, safe=False)
