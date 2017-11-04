@@ -1,16 +1,9 @@
 import React from "react"
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
 import Headline from "../components/Headline"
-
-const styles = {
-  button: {
-    cursor: "pointer",
-  },
-  counter: {
-    color: "blue",
-    fontSize: "20px",
-  }
-}
+const axios = require('axios');
+const cookie = require('react-cookie');
+var $ = require("jquery");
 
 
 const data = [
@@ -46,16 +39,27 @@ class NormalText extends React.Component {
 }
 
 export default class SampleAppContainer extends React.Component {
-
+  constructor(props)
+  {
+    super(props);
+    this.state = {data: data, videoUrl: ""};
+  }
+  handleSubmit = (event) => {
+    console.log(event);
+    var params = {videoId: videoUrl, url: '/analyze'};
+    params.csrfmiddlewaretoken = cookie.load('csrftoken');
+    $.ajax(params);
+    event.preventDefault();
+  }
   render() {
     return (
       <div>
         <HeadText text="Analyze YouTube Comment"/>
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
-        <form action="/analyze/" method="GET">
+        <form>
         <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl'/>
-        <input type="submit"/>
+        <input type="submit" onClick={this.handleSubmit}/>
         </form>
 
         <br/><br/><br/>
@@ -69,7 +73,6 @@ export default class SampleAppContainer extends React.Component {
           <Area type='monotone' dataKey='pv' stackId="1" stroke='#82ca9d' fill='#82ca9d' />
           <Area type='monotone' dataKey='amt' stackId="1" stroke='#ffc658' fill='#ffc658' />
         </AreaChart>
-
       </div>
     );
   }
