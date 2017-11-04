@@ -3,7 +3,7 @@ import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
 import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from "recharts";
 import Headline from "../components/Headline"
 
-const cookie = require('react-cookie');
+const placeholderUrl = 'https://www.youtube.com/watch?v=NWdc7PyZNLA';
 var $ = require("jquery");
 
 
@@ -71,24 +71,24 @@ export default class SampleAppContainer extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {nextPageToken:"", emotions:[], data: [], data_sum: [], data_display: [], videoUrl: ""};
+    this.state = {
+        nextPageToken:"", emotions:[], data: [], data_sample:[],
+        data_sum: [], data_display: [], videoUrl: placeholderUrl};
   }
 
   handleData = (result) =>
   {
     // console.log(result);
-    result.data.stats['page'] = this.pages++;
-    console.log(this.state.emotions);
+    result.data.stats['page'] = this.pages += 20;
     var e_temp = this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0))
-    console.log(e_temp);
     var data_s = this.state.data_sum;
     // console.log(data_s)
     var data_dis = []
     for (var i = 0; i < e_temp.length; i++){
       var x = e_temp[i]
-      if (typeof(data_s[x]) == 'undefined' && typeof(result.data.stats[x]) == 'undefined'){
+      if (typeof(data_s[x]) === 'undefined' && typeof(result.data.stats[x]) === 'undefined'){
         data_s[x] = 0;
-      } else if (typeof(data_s[x]) == 'undefined' && typeof(result.data.stats[x]) !== 'undefined') {
+      } else if (typeof(data_s[x]) === 'undefined' && typeof(result.data.stats[x]) !== 'undefined') {
         data_s[x] = result.data.stats[x];
       } else if (typeof(data_s[x]) !== 'undefined' && typeof(result.data.stats[x]) !== 'undefined'){
         data_s[x] += result.data.stats[x];
@@ -96,27 +96,36 @@ export default class SampleAppContainer extends React.Component {
       data_dis.push({"emotion": x, "rate":data_s[x]});
     }
 
-    console.log(data_dis)
+    const data = this.state.data.concat(result.data.stats);
+    var data_sample = data;
+    if(data_sample.length > 16)
+    {
+        const step = data_sample.length >> 4;
+        data_sample = data_sample.filter((x, i) => i % step == 0);
+    }
     this.setState({
       nextPageToken: result.nextPageToken,
       emotions: e_temp,
       data: this.state.data.concat(result.data.stats),
       data_sum: data_s,
+      data_sample: data_sample,
       data_display: data_dis
     });
-
+    this.fetchData();
   }
 
-  handleSubmit = (event) => {
+  fetchData = () => {
     var regex = new RegExp("youtube.com\/.*=(.*)");
-    const videoId = regex.exec("https://www.youtube.com/watch?v=d6c6uIyieoo")[1];
-    console.log(videoId);
-    var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: this.handleData};
+    const videoId = regex.exec(this.state.videoUrl)[1];
+    var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: result => this.handleData(result)};
     if(this.state.nextPageToken !== "")
       params.data['nextPageToken'] = this.state.nextPageToken;
 
-    params.csrfmiddlewaretoken = cookie.load('csrftoken');
     $.ajax(params);
+  }
+
+  handleSubmit = (event) => {
+    this.fetchData();
     event.preventDefault();
   }
 
@@ -133,27 +142,27 @@ export default class SampleAppContainer extends React.Component {
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
         <form>
-        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType} value='https://www.youtube.com/watch?v=NWdc7PyZNLA'/>
+        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType} value={placeholderUrl}/>
         <input type="submit" onClick={this.handleSubmit}/>
         </form>
 
         <br/><br/><br/>
-      <AreaChart width={600} height={400} data={this.state.data} stackOffset="expand"
-            margin={{top: 10, right: 30, left: 0, bottom: 0}} >
-        <XAxis dataKey="page"/>
-        <YAxis tickFormatter={toPercent}/>
-        <CartesianGrid strokeDasharray="3 3"/>
-        {this.state.emotions.map((obj, index) =>
-          <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
-      </AreaChart>
+        <AreaChart width={600} height={400} data={this.state.data_sample} stackOffset="expand"
+              margin={{top: 10, right: 30, left: 0, bottom: 0}} >
+          <XAxis dataKey="page"/>
+          <YAxis tickFormatter={toPercent}/>
+          <CartesianGrid strokeDasharray="3 3"/>
+          {this.state.emotions.map((obj, index) =>
+            <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
+        </AreaChart>
 
-      <RadarChart outerRadius={90} width={730} height={250} data={this.state.data_display}>
-        <PolarGrid />
-        <PolarAngleAxis dataKey="emotion" />
-        <PolarRadiusAxis angle={30} domain={[0, 10]} />
-        <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-        <Legend />
-      </RadarChart>
+        <RadarChart outerRadius={90} width={400} height={400} data={this.state.data_display}>
+          <PolarGrid />
+          <PolarAngleAxis dataKey="emotion" />
+          <PolarRadiusAxis angle={30} domain={[0, 10]} />
+          <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+          <Legend />
+        </RadarChart>
       </div>
     );
   }
