@@ -13,13 +13,13 @@ parts = 'snippet,replies'
 
 def analyze(request):
 	params = {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoId'), 'maxResults': "20"}
-	if request.GET.get('pageNum'):
-		params['pageToken'] = request.GET.get('pageNum')
+	if request.GET.get('nextPageToken'):
+		params['pageToken'] = request.GET.get('nextPageToken')
 	resp = requests.get(base_url, params)
 	data = resp.json()
 	text = [x['snippet']['topLevelComment']['snippet']['textDisplay'] for x in data['items']]
 	print("procesing...")
 	print(text)
 	result = process(['\n'.join(text)])
-	result = {'pageCount': data['pageInfo']['totalResults'], 'data': result}
+	result = {'nextPageToken': data['nextPageToken'], 'data': result}
 	return JsonResponse(result, safe=False)

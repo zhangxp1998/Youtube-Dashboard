@@ -70,14 +70,19 @@ export default class SampleAppContainer extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {emotions:[], data: [], videoUrl: ""};
+    this.state = {nextPageToken:"", emotions:[], data: [], videoUrl: ""};
   }
 
   handleData = (result) =>
   {
     console.log(result);
     result.data.stats['page'] = this.pages++;
-    this.setState({emotions:result.data.emotions, data: this.state.data.concat(result.data.stats)});
+    console.log(this.state.emotions);
+    this.setState({
+      nextPageToken: result.nextPageToken, 
+      emotions: this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0)), 
+      data: this.state.data.concat(result.data.stats)
+    });
   }
 
   handleSubmit = (event) => {
@@ -85,6 +90,9 @@ export default class SampleAppContainer extends React.Component {
     const videoId = regex.exec("https://www.youtube.com/watch?v=d6c6uIyieoo")[1];
     console.log(videoId);
     var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: this.handleData};
+    if(this.state.nextPageToken !== "")
+      params.data['nextPageToken'] = this.state.nextPageToken;
+
     params.csrfmiddlewaretoken = cookie.load('csrftoken');
     $.ajax(params);
     event.preventDefault();
@@ -103,7 +111,7 @@ export default class SampleAppContainer extends React.Component {
         <br/>
         <NormalText text = "Import Your YouTube URL Here:"/>
         <form>
-        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType}/>
+        <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType} value='https://www.youtube.com/watch?v=NWdc7PyZNLA'/>
         <input type="submit" onClick={this.handleSubmit}/>
         </form>
 
