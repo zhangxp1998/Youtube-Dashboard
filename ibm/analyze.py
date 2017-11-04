@@ -54,7 +54,7 @@ def process(lines):
     # plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
     #
     # plt.show()
-    return emotive_stats, emotive_distribution
+    return {'stats': emotive_stats, 'dist': emotive_distribution}
 
 
 if __name__ == "__main__":
