@@ -33,25 +33,28 @@ def process(lines):
         text = tr.translate(text).text
         data.append(tone_analyzer.tone(text=text))
 
-    emotives = []
+    emotive_distribution = {}
     emotive_stats = {}
     for j in data:
         for t in j['document_tone']['tones']:
-            emotives.append(t)
             if t['tone_name'] not in emotive_stats:
                 emotive_stats[t['tone_name']] = t['score']
+                emotive_distribution[t['tone_name']] = 1
             else:
                 emotive_stats[t['tone_name']] += t['score']
+                emotive_distribution[t['tone_name']] += 1
             # for tone in t:
             #     if tone['tone_name'] not in emotive_types:
             #         emotive_types.append(tone['tone_name'])
     print(emotive_stats)
+    print()
+    print(emotive_distribution)
         # print json.dumps(j, indent=4, sort_keys=True)
     # plt.bar(range(len(emotive_stats)), emotive_stats.values(), align='center')
     # plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
     #
     # plt.show()
-    return emotive_stats
+    return emotive_stats, emotive_distribution
 
 
 if __name__ == "__main__":
