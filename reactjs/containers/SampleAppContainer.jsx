@@ -44,8 +44,17 @@ export default class SampleAppContainer extends React.Component {
     super(props);
     this.state = {data: data, videoUrl: ""};
   }
+
+  handleDate = (data) =>
+  {
+
+  }
+
   handleSubmit = (event) => {
-    var params = {method:'get', data: {videoId: this.state.videoUrl}, url: '/analyze/', success: (result) => console.log(result)};
+    var regex = new RegExp("youtube.com\/.*=(.*)");
+    const videoId = regex.exec("https://www.youtube.com/watch?v=d6c6uIyieoo")[1];
+    console.log(videoId);
+    var params = {method:'get', data: {videoId: videoId}, url: '/analyze/', success: (result) => console.log(result)};
     params.csrfmiddlewaretoken = cookie.load('csrftoken');
     $.ajax(params);
     event.preventDefault();
