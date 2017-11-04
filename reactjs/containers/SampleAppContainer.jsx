@@ -1,5 +1,6 @@
 import React from "react"
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
+import {RadarChart} from "recharts";
 import Headline from "../components/Headline"
 
 const cookie = require('react-cookie');
@@ -7,7 +8,7 @@ var $ = require("jquery");
 
 
 const colors = [
-  {stroke: '#8884d8', fill: '#8884d8'}, 
+  {stroke: '#8884d8', fill: '#8884d8'},
   {stroke: '#82ca9d', fill: '#82ca9d'},
   {stroke: '#FFFF66', fill: '#FFFF66'},
   {stroke: '#CCFFFF', fill: '#CCFFFF'},
@@ -17,7 +18,7 @@ const colors = [
 
 const getPercent = (value, total) => {
   const ratio = total > 0 ? value / total : 0;
-  
+
   return toPercent(ratio, 2);
 };
 
@@ -27,7 +28,7 @@ const toPercent = (decimal, fixed = 0) => {
 const renderTooltipContent = (o) => {
   const { payload, label } = o;
   const total = payload.reduce((result, entry) => (result + entry.value), 0);
-  
+
   return (
     <div className="customized-tooltip-content">
       <p className="total">{`${label} (Total: ${total})`}</p>
@@ -70,7 +71,7 @@ export default class SampleAppContainer extends React.Component {
   constructor(props)
   {
     super(props);
-    this.state = {nextPageToken:"", emotions:[], data: [], videoUrl: ""};
+    this.state = {nextPageToken:"", emotions:[], data: [], data_sum: [], videoUrl: ""};
   }
 
   handleData = (result) =>
@@ -79,9 +80,10 @@ export default class SampleAppContainer extends React.Component {
     result.data.stats['page'] = this.pages++;
     console.log(this.state.emotions);
     this.setState({
-      nextPageToken: result.nextPageToken, 
-      emotions: this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0)), 
-      data: this.state.data.concat(result.data.stats)
+      nextPageToken: result.nextPageToken,
+      emotions: this.state.emotions.concat(result.data.emotions.filter(x => this.state.emotions.indexOf(x)<0)),
+      data: this.state.data.concat(result.data.stats),
+      data_sum: this.state.data
     });
   }
 
@@ -102,7 +104,7 @@ export default class SampleAppContainer extends React.Component {
     this.setState({videoUrl: event.target.value});
   }
 
-  
+
   pages = 0;
   render() {
     return (
@@ -121,7 +123,7 @@ export default class SampleAppContainer extends React.Component {
         <XAxis dataKey="page"/>
         <YAxis tickFormatter={toPercent}/>
         <CartesianGrid strokeDasharray="3 3"/>
-        {this.state.emotions.map((obj, index) => 
+        {this.state.emotions.map((obj, index) =>
           <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
       </AreaChart>
       </div>

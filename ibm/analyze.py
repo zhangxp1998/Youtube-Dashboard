@@ -49,11 +49,11 @@ def process(lines):
             #     if tone['tone_name'] not in emotive_types:
             #         emotive_types.append(tone['tone_name'])
 
-    sum_emotive = 0
-    for key, value in emotive_stats.items():
-        sum_emotive += value
-    for key, value in emotive_stats.items():
-        emotive_stats[key] = emotive_stats[key]/sum_emotive
+    # sum_emotive = 0
+    # for key, value in emotive_stats.items():
+    #     sum_emotive += value
+    # for key, value in emotive_stats.items():
+    #     emotive_stats[key] = emotive_stats[key]/sum_emotive
     print(emotive_stats)
     print()
     print(emotive_distribution)
