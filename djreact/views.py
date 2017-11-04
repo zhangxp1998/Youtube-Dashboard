@@ -12,8 +12,14 @@ base_url = 'https://www.googleapis.com/youtube/v3/commentThreads'
 parts = 'snippet,replies'
 
 def analyze(request):
-	resp = requests.get(base_url, {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoUrl'), 'maxResults': "100"})
+	params = {'part': parts, 'key':api_key, 'videoId': request.GET.get('videoUrl'), 'maxResults': "20"}
+	if request.GET.get('pageNum'):
+		params['pageToken'] = request.GET.get('pageNum')
+	resp = requests.get(base_url, params)
 	data = resp.json()
 	text = [x['snippet']['topLevelComment']['snippet']['textDisplay'] for x in data['items']]
+	print("procesing...")
 	print(text)
-	return JsonResponse(text, safe=False)
+	result = process(['\n'.join(text)])
+	result['pageCount'] = data['pageInfo']['totalResults']
+	return JsonResponse(result, safe=False)
