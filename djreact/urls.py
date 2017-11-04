@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.views import generic
+from djreact import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -23,4 +24,5 @@ urlpatterns = [
         generic.TemplateView.as_view(template_name='sample_app2.html')),
     url(r'^$',
         generic.TemplateView.as_view(template_name='sample_app.html')),
+    url(r'analyze/', views.analyze)
 ]
