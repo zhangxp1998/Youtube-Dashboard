@@ -41,7 +41,7 @@ def main():
             # for tone in t:
             #     if tone['tone_name'] not in emotive_types:
             #         emotive_types.append(tone['tone_name'])
-    print emotive_stats
+    print(emotive_stats)
         # print json.dumps(j, indent=4, sort_keys=True)
     plt.bar(range(len(emotive_stats)), emotive_stats.values(), align='center')
     plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
