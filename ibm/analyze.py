@@ -60,6 +60,10 @@ def process(lines):
     # plt.xticks(range(len(emotive_stats)), emotive_stats.keys())
     #
     # plt.show()
+    if len(emotive_stats) == 0:
+        emotive_stats = 0
+    if len(emotive_distribution) == 0:
+        emotive_stats = 0
     return {'stats': emotive_stats, 'dist': emotive_distribution}
 
 
