@@ -30,7 +30,7 @@ def process(lines):
     data = []
     tr = Translator()
     for text in lines:
-        #text = tr.translate(text).text
+        text = tr.translate(text).text
         data.append(tone_analyzer.tone(text=text))
 
     emotive_distribution = {}
@@ -46,6 +46,12 @@ def process(lines):
             # for tone in t:
             #     if tone['tone_name'] not in emotive_types:
             #         emotive_types.append(tone['tone_name'])
+
+    sum_emotive = 0
+    for key, value in emotive_stats.items():
+        sum_emotive += value
+    for key, value in emotive_stats.items():
+        emotive_stats[key] = emotive_stats[key]/sum_emotive
     print(emotive_stats)
     print()
     print(emotive_distribution)
