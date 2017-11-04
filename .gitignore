@@ -4,3 +4,4 @@ node_modules/
 webpack-stats-local.json
 webpack.local-settings.js
 *.sqlite3
+package-lock.json
