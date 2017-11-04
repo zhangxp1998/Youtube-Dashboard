@@ -17,6 +17,7 @@ tone_analyzer = ToneAnalyzerV3(
 
 
 def main():
+
     print("Analyzing Text from " + sys.argv[1])
     file_name = sys.argv[1]
     data = []
@@ -28,7 +29,9 @@ def main():
         for text in lines:
             text = tr.translate(text).text
             data.append(tone_analyzer.tone(text=text))
+    process(data)
 
+def process(data):
     emotives = []
     emotive_stats = {}
     for j in data:
