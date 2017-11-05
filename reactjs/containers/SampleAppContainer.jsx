@@ -135,7 +135,7 @@ export default class SampleAppContainer extends React.Component {
           <PolarGrid />
           <PolarAngleAxis dataKey="emotion" />
           <PolarRadiusAxis angle={30} domain={[0, 10]} />
-          <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+          <Radar name="Sum" dataKey="rate" stroke="#FF2222" fill="#FF2222" fillOpacity={0.6} />
           <Legend />
         </RadarChart>
 
