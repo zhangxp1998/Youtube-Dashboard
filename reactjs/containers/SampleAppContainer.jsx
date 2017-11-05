@@ -1,6 +1,6 @@
 import React from "react"
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
-import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis} from "recharts";
+import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer} from "recharts";
 import Headline from "../components/Headline"
 
 
@@ -121,16 +121,15 @@ export default class SampleAppContainer extends React.Component {
 
         <br/><br/><br/>
 
-        <RadarChart outerRadius={90} width={400} height={400} data={this.state.data_display}>
+        <RadarChart outerRadius={90} width={400} height={400} data={this.state.data_display} style={{display: 'inline-block'}}>
           <PolarGrid />
           <PolarAngleAxis dataKey="emotion" />
           <PolarRadiusAxis angle={30} domain={[0, 10]} />
           <Radar name="Sum" dataKey="rate" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
           <Legend />
         </RadarChart>
-
-        <AreaChart width={1200} height={400} data={this.state.data_sample}
-              margin={{top: 10, right: 30, left: 0, bottom: 0}} onClick={console.log}>
+        <AreaChart width={600} height={400} data={this.state.data_sample}
+              margin={{top: 10, right: 30, left: 0, bottom: 0}} onClick={console.log} style={{display: 'inline-block'}}>
           <XAxis dataKey="page"/>
           <YAxis/>
           <CartesianGrid strokeDasharray="3 3"/>
@@ -138,7 +137,6 @@ export default class SampleAppContainer extends React.Component {
           {this.state.emotions.map((obj, index) =>
             <Area key={index} type='monotone' dataKey={obj} stackId='1' stroke={colors[index%colors.length].stroke} fill={colors[index%colors.length].fill}/>)}
         </AreaChart>
-
       </div>
     );
   }
