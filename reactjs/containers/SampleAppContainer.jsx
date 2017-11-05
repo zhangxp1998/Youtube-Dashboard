@@ -9,12 +9,14 @@ const $ = require("jquery");
 const moment = require('moment');
 
 const colors = [
-  {stroke: '#8884d8', fill: '#8884d8'},
+  {stroke: '#44EE44', fill: '#44EE44'},
+  {stroke: '#70DBFF', fill: '#70DBFF'},
+  {stroke: '#FFFFC7', fill: '#FFFFC7'},
+  {stroke: '#FF7F00', fill: '#FF7F00'},
+  {stroke: '#007FFF', fill: '#007FFF'},
+  {stroke: '#EAADEA', fill: '#EAADEA'},
   {stroke: '#82ca9d', fill: '#82ca9d'},
-  {stroke: '#FFFF66', fill: '#FFFF66'},
-  {stroke: '#CCFFFF', fill: '#CCFFFF'},
-  {stroke: '#FFCCFF', fill: '#FFCCFF'},
-  {stroke: '#FF9933', fill: '#FF9933'}
+  {stroke: '#93DB70', fill: '#92DB70'},
 ];
 
 class HeadText extends React.Component {
