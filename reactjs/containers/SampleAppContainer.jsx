@@ -2,6 +2,7 @@ import React from "react"
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from "recharts";
 import {RadarChart, Radar, Legend, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer} from "recharts";
 import Headline from "../components/Headline"
+import ToggleButton from "../components/ToggleButton"
 
 
 const placeholderUrl = 'https://www.youtube.com/watch?v=NWdc7PyZNLA';
@@ -97,7 +98,7 @@ export default class SampleAppContainer extends React.Component {
     if(this.state.nextPageToken !== "")
       params.data['nextPageToken'] = this.state.nextPageToken;
 
-    $.ajax(params);
+    this.xhr = $.ajax(params);
   }
 
   handleSubmit = (event) => {
@@ -111,7 +112,8 @@ export default class SampleAppContainer extends React.Component {
 
 
   pages = 0;
-  render() {
+  render()
+  {
     return (
       <div>
         <HeadText text="Analyze YouTube Comment"/>
@@ -119,7 +121,7 @@ export default class SampleAppContainer extends React.Component {
         <NormalText text = "Import Your YouTube URL Here:"/>
         <form>
         <input style={{marginLeft: "50px"}} type='text' name="videoUrl" id='videoUrl' onChange={this.handleType} value={placeholderUrl} size={50}/>
-        <input type="submit" onClick={this.handleSubmit}/>
+        <ToggleButton onStart={this.handleSubmit} onStop={() => this.xhr.abort()} onText="analyze" offText="stop"/>
         </form>
 
         <br/><br/><br/>
@@ -141,7 +143,6 @@ export default class SampleAppContainer extends React.Component {
           <Radar name="Sum" dataKey="rate" stroke="#FF2222" fill="#FF2222" fillOpacity={0.6} />
           <Legend />
         </RadarChart>
-
       </div>
     );
   }

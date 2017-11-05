@@ -15,7 +15,6 @@ tone_analyzer = ToneAnalyzerV3(
 
 
 def main():
-
     print("Analyzing Text from " + sys.argv[1])
     file_name = sys.argv[1]
     data = []
