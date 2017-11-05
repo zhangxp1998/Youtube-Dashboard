@@ -1,4 +1,5 @@
 *.pyc
+npm-debug.log
 djreact/static/bundles/
 node_modules/
 webpack-stats-local.json
